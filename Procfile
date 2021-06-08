@@ -1,1 +1,1 @@
-worker: python botstring29.py
+web: python botstring29.py
