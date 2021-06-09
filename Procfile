@@ -1,1 +1,1 @@
-web: python botstring31.py
+worker: python botstring31.py
