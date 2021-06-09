@@ -86,7 +86,7 @@ def main():
     while True:
         since_id = check_mentions(api, since_id)
         logger.info("Waiting...")
-        time.sleep(9223372036.854775)
+        time.sleep(15)
 
 if __name__ == "__main__":
     main()
