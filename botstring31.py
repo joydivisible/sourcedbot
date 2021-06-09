@@ -45,7 +45,7 @@ def check_mentions(api, since_id):
 
         if keywords_search is not None:
 
-                mystring = search(keywords_search, num_results=500)
+                mystring = search(keywords_search, num_results=50)
         else:
                 mystring = search("error", num_results=1)
 
@@ -57,7 +57,6 @@ def check_mentions(api, since_id):
                                 output_info.append(word)
                                 infostring = ' '.join(output_info)
         print(infostring)
-                                
 
 
         if infostring is not None:
@@ -87,7 +86,7 @@ def main():
     while True:
         since_id = check_mentions(api, since_id)
         logger.info("Waiting...")
-        time.sleep(60)
+
 
 if __name__ == "__main__":
     main()
