@@ -23,15 +23,16 @@ def check_mentions(api, since_id):
 
     new_since_id = since_id
 
-    for tweet in tweepy.Cursor(api.mentions_timeline, since_id=since_id).items():
+    for tweet in tweepy.Cursor(api.mentions_timeline,
+        since_id=since_id).items():
 
         new_since_id = max(tweet.id, new_since_id)
-
 
         if tweet.in_reply_to_status_id is not None:
             in_reply_to_status_id = tweet.id
             status_id = tweet.in_reply_to_status_id
             tweet_u = api.get_status(status_id,tweet_mode='extended')
+
 
         logger.info(f"Answering to {tweet.user.name}")
         
@@ -45,7 +46,7 @@ def check_mentions(api, since_id):
 
         if keywords_search is not None:
 
-                mystring = search(keywords_search, num_results=50)
+                mystring = search(keywords_search, num_results=500)
         else:
                 mystring = search("error", num_results=1)
 
@@ -55,11 +56,10 @@ def check_mentions(api, since_id):
         for word in mystring:
                 if "harvard" in word or "cornell" in word or "researchgate" in word or "yale" in word or "rutgers" in word or "caltech" in word or "upenn" in word or "princeton" in word or "columbia" in word or "journal" in word or "mit" in word or "stanford" in word or "gov" in word or "pubmed" in word or "theguardian" in word or "aaas" in word or "bbc" in word or "rice" in word or "ams" in word or "sciencemag" in word or "research" in word or "article" in word or "publication" in word or "nationalgeographic" in word or "ngenes" in word:
                                 output_info.append(word)
-                                infostring = ' '.join(output_info)
-        print(infostring)
+                                infostringa = ' '.join(output_info)
 
 
-        if infostring is not None:
+        if output_info:
                 output_info4 = output_info[:5]
                 infostring = ' '.join(output_info4)
                 print(infostring)
@@ -74,8 +74,8 @@ def check_mentions(api, since_id):
         print(status)
 
         return new_since_id
-    return check_mentions
 
+    return check_mentions
 
 
 
@@ -84,9 +84,15 @@ def main():
     api = create_api()
     since_id = 1 #the last mention you have.
     while True:
-        since_id = check_mentions(api, since_id)
-        logger.info("Waiting...")
-        time.sleep(15)
+        try:
+            since_id = check_mentions(api, since_id)
+
+        except Exception as e:
+            time.sleep(60)
+            logger.info("Waiting...")
+            pass
+
+    sleep_on_rate_limit=False
 
 if __name__ == "__main__":
     main()

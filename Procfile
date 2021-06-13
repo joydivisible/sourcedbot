@@ -1,1 +1,1 @@
-worker: python botstring32.py
+worker: python botstring41.py
